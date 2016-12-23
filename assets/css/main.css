@@ -581,7 +581,7 @@ header.nav.hide-menu {
  ----------------------------------- */
 
 #home {
-    background: url('../../images/home-bg.jpg') no-repeat fixed center center / cover;
+    background: url('../../images/code_bg.jpeg') no-repeat fixed center center / cover;
 }
 
 #home .sec-overlay {
