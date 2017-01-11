@@ -38,8 +38,10 @@ function getColor() {
 function startGame(player) {
   playWithComputer(player);
   createBoard();
+  $('#game-title').removeClass('blue').addClass('red');
+  $('#canvas-container').removeClass('border-start').addClass('red-border');
   $('chose-player-buttons, game-rules, #rules, #title, #button').addClass('invisible');
-  $('#winner-declaration, #gameBoard, #score-board').removeClass('invisible');
+  $('#winner-declaration, #gameBoard, #score-board, #timer-container').removeClass('invisible');
 
 }
 
@@ -52,18 +54,18 @@ function playWithComputer(player) {
 }
 
 function createBoard() {
-  for (let i = 20; i < 820; i += 20) {
+  for (let i = 20; i <= 500; i += 20) {
     context.beginPath();
     context.moveTo(0, i);
-    context.lineTo(800, i);
+    context.lineTo(500, i);
     context.lineWidth = 0.1;
     context.stroke();
   }
 
-  for (let i = 20; i < 820; i += 20) {
+  for (let i = 20; i <= 500; i += 20) {
     context.beginPath();
     context.moveTo(i, 0);
-    context.lineTo(i, 800);
+    context.lineTo(i, 500);
     context.lineWidth = 0.1;
     context.stroke();
   }
@@ -91,7 +93,7 @@ function empty(pos) {
 }
 
 function validMove(pos) {
-  if (empty(pos) && !capturedEmptySpots.includeElement(pos) && (pos[0] >= 0 && pos[0] <= 800) && (pos[1] >= 0 && pos[1] <= 800)) {
+  if (empty(pos) && !capturedEmptySpots.includeElement(pos) && (pos[0] >= 0 && pos[0] <= 500) && (pos[1] >= 0 && pos[1] <= 500)) {
     return true;
   }
   return false;
@@ -302,9 +304,9 @@ function enemyDotInsideCheck(dots) {
   enemyDotInside = false;
   captureRoute = [];
   if (dots.length < 1) { return }
-  let minY = 800;
+  let minY = 500;
   let maxY = 0;
-  let minX = 800;
+  let minX = 500;
   let maxX = 0;
   dots.forEach((dot) => {
     if(dot[0] < minX) {
@@ -377,6 +379,7 @@ function enemyDotInsideCheck(dots) {
   }
 }
 
+
 function switchPlayer() {
   enemyDotInside = false;
   if (currentPlayer === 'red' && computerPlayer) {
@@ -386,24 +389,26 @@ function switchPlayer() {
     checkForCapture();
   } else if (currentPlayer === 'red' && !computerPlayer) {
     currentPlayer = 'blue';
-    togleBorderColor();
+    togglePlayerColor();
     getColor();
     checkForCapture();
   } else if (currentPlayer === 'blue') {
     currentPlayer = 'red';
-    togleBorderColor();
+    togglePlayerColor();
     getColor();
     checkForCapture();
   }
 }
 
-function togleBorderColor() {
+
+
+function togglePlayerColor() {
   if (currentPlayer === 'red') {
-    $('#canvas-container').removeClass('blue-border');
-    $('#canvas-container').addClass('red-border');
+    $('#canvas-container').removeClass('blue-border').addClass('red-border');
+    $('#game-title').removeClass('blue').addClass('red');
   } else {
-    $('#canvas-container').removeClass('red-border');
-    $('#canvas-container').addClass('blue-border');
+    $('#canvas-container').removeClass('red-border').addClass('blue-border');
+    $('#game-title').removeClass('red').addClass('blue');
   }
 }
 

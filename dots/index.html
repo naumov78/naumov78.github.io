@@ -7,15 +7,24 @@
   </head>
   <body>
     <div class="game-container">
+      <div id="game-title" class="game-title blue">The Dots</div>
+      <div class="links">
+        <ul class="link-list">
+          <li><a href="https://github.com/naumov78/Dots">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/aleksei-naumov">LinkedIn</a></li>
+          <li><a href="mailto:aleksei.naumov.nyc@gmail.com">E-mail</a></li>
+        </ul>
+      </div>
+
       <div id="score-board" class="score-board invisible">
         <span id="reds"><span id="red-score">RED dots captured:</span>&nbsp;&nbsp;<span id="red-score-amount"></span></span>
         <span id="blues"><span id="blue-score">BLUE dots captured:</span>&nbsp;&nbsp;<span id="blue-score-amount"></span></span>
       </div>
-      <div id="canvas-container" class="red-border">
-        <canvas class="invisible" id="gameBoard" width="800" height="800"></canvas>
+      <div id="canvas-container" class="border-start">
+        <canvas class="invisible" id="gameBoard" width="500" height="500"></canvas>
 
         <div class="game-rules">
-          <p id="title">The Dots: Game Rules</p>
+          <p id="title">Game Rules</p>
           <p id="rules">The Dots is the game for two players. You can play either with other human player or a computer. Each turn a player places
              a dot of corresponding color on the board. When player's dots placed around enemy dot this dot is considered captured and can not participate in
             the game any more. The captured zone became colored with player's color. The goal of the game is to capture at least 10 enemy's dots.</p>
@@ -33,17 +42,9 @@
             <p id="restart-button"></p>
           </div>
         </div>
+        <div id="timer-container" class="invisible"><span id="timer"></span></div>
       </div>
-
-
-      <!-- links were here -->
-      <div class="links">
-        <ul class="link-list">
-          <li><a href="https://github.com/naumov78/Dots">GitHub</a></li>
-          <li><a href="https://www.linkedin.com/in/aleksei-naumov">LinkedIn</a></li>
-          <li><a href="mailto:aleksei.naumov.nyc@gmail.com">E-mail</a></li>
-        </ul>
-      </div>
+      <div class="name"><a href="http://alex-naumov.me">made by Alex Naumov</a></div>
     </div>
 
   </body>
