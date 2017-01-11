@@ -1,4 +1,4 @@
-### www.alex-naumov.me
+### alex-naumov.me
 
 [Live](http://alex-naumov.me)
 
