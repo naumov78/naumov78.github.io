@@ -3,6 +3,8 @@ const blueDots = [];
 let currentPlayer = 'red';
 let neighbors, allRoutes, stack, visited, lastDotPlaced, count, innerColor, outerColor, winner, interval;
 let gameOver = false;
+let redSwitchTurnCount = 0;
+let blueSwitchTurnCount = 0;
 let level = 3;
 let computerPlayer;
 const capturedList = [];
@@ -45,7 +47,6 @@ function unmuteSounds() {
 
 function toggleMuteButton() {
 const soundButton = document.getElementById('sound');
-// soundButton.innerHTML = ``;
   if (place.muted) {
     soundButton.innerHTML = `<img src="./images/soundon.png" onClick="unmuteSounds()">`
   } else {
@@ -86,7 +87,6 @@ function startGame(player) {
   $('#canvas-container').removeClass('border-start').addClass('red-border');
   $('chose-player-buttons, game-rules, #rules, #title, #button, #level-buttons').addClass('invisible');
   $('#winner-declaration, #gameBoard, #score-board, #timer-container').removeClass('invisible');
-
 }
 
 function playWithComputer(player) {
@@ -115,7 +115,13 @@ function createBoard() {
   }
 }
 
-
+function zeroSwitchTurnCount() {
+  if (currentPlayer === 'red') {
+    redSwitchTurnCount = 0;
+  } else {
+    blueSwitchTurnCount = 0;
+  }
+}
 
 function updatePos(pos) {
   return Math.round(pos / 20) * 20
@@ -195,6 +201,7 @@ function placeDot(e) {
     stack.push(lastDotPlaced);
     findRoutes(stack);
     createCapture(processAllRoutes());
+    zeroSwitchTurnCount();
     switchPlayer();
     updateScores();
     checkWinner();
@@ -433,13 +440,23 @@ function timer(count, display) {
     count--;
     if (count < 0) {
       window.clearInterval(interval);
+      increaseSwitchTurnCount();
       switchPlayer();
     }
   }
   interval = setInterval(countDown, 1000);
 }
 
+function increaseSwitchTurnCount() {
+    if (currentPlayer === 'red') {
+      redSwitchTurnCount++;
+    } else {
+      blueSwitchTurnCount++;
+    }
+}
+
 function switchPlayer() {
+  checkWinner();
   window.clearInterval(interval);
   enemyDotInside = false;
   if (currentPlayer === 'red' && computerPlayer) {
@@ -463,15 +480,15 @@ function switchPlayer() {
   }
 }
 
-
-
 function togglePlayerColor() {
-  if (currentPlayer === 'red') {
-    $('#canvas-container').removeClass('blue-border').addClass('red-border');
-    $('#game-title').removeClass('blue').addClass('red');
-  } else {
-    $('#canvas-container').removeClass('red-border').addClass('blue-border');
-    $('#game-title').removeClass('red').addClass('blue');
+  if (!gameOver) {
+    if (currentPlayer === 'red') {
+      $('#canvas-container').removeClass('blue-border').addClass('red-border');
+      $('#game-title').removeClass('blue').addClass('red');
+    } else {
+      $('#canvas-container').removeClass('red-border').addClass('blue-border');
+      $('#game-title').removeClass('red').addClass('blue');
+    }
   }
 }
 
@@ -517,21 +534,19 @@ function increaseCaptures() {
 }
 
 function checkWinner() {
-  debugger
-  if ((capturedReds > 9 && computerPlayer) || (redDots.length < 1 && capturedReds > 0)) {
-    debugger
+  if ((capturedReds > 4 && computerPlayer) || (redDots.length < 1 && capturedReds > 0) || (blueDots.length > 0 && redSwitchTurnCount >= 3)) {
     winner = 'Blue Player'
     lose.play();
     gameOver = true;
     declareWinner();
   }
-  if ((capturedReds > 9 && !computerPlayer) || (redDots.length < 1 && capturedReds > 0)) {
+  if ((capturedReds > 4 && !computerPlayer) || (redDots.length < 1 && capturedReds > 0) || (blueDots.length > 0 && redSwitchTurnCount >= 3)) {
     winner = 'Blue Player'
     victory.play();
     gameOver = true;
     declareWinner();
   }
-  if (capturedBlues > 9 || (blueDots.length < 1 && capturedBlues > 0)) {
+  if (capturedBlues > 4 || (blueDots.length < 1 && capturedBlues > 0) || (redDots.length > 0 && blueSwitchTurnCount >= 3)) {
     winner = 'Red Player'
     victory.play();
     gameOver = true;
@@ -823,6 +838,7 @@ function placeAiDot(pos) {
     lastDotPlaced = pos;
     place.play();
     allRoutes = [];
+    blueSwitchTurnCount = 0;
     visitedFromStart = [];
     stack = [];
     visited = [];
@@ -832,8 +848,6 @@ function placeAiDot(pos) {
     switchPlayer();
     updateScores();
     checkWinner();
-    // const id = setTimeout(checkWinner, 500);
-    // window.clearInterval(id)
 }
 
 // Helper methods

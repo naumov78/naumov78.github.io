@@ -20,7 +20,6 @@ body {
 }
 
 .game-title {
-  /*float: right;*/
   width: 600px;
   text-align: center;
   font-size: 30px;
@@ -229,20 +228,19 @@ body {
 
 .game-rules {
   width: 500px;
-  padding: 0 0 50px 0;
 }
 
 #level-buttons {
   position: absolute;
   left: 183px;
-  top: 420px;
+  top: 480px;
   width: 450px;
 }
 
 .chose-player-buttons {
   position: absolute;
   left: 75px;
-  top: 465px;
+  top: 525px;
   width: 450px;
 }
 
@@ -256,6 +254,7 @@ body {
 
 #title {
   font-size: 19px;
+  margin: 0;
   color: #cc3300;
   font-weight: 700;
   text-align: center;
@@ -263,9 +262,12 @@ body {
 
 #rules {
   text-align: justify;
-  font-size: 20px;
-  letter-spacing: 1px;
-  line-height: 27px;
+  font-size: 13px;
+}
+
+#rules-points {
+  font-weight: 700;
+  color: #cc3300;
 }
 
 #timer-container {
