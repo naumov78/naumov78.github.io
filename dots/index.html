@@ -7,7 +7,11 @@
   </head>
   <body>
     <div class="game-container">
-      <div id="game-title" class="game-title blue">The Dots</div>
+      <div id="game-title" class="game-title blue"><span>The Dots</span>
+        <span id="sound">
+          <img src="./images/soundoff.png" onClick="muteSounds()">
+        </span>
+      </div>
       <div class="links">
         <ul class="link-list">
           <li><a href="https://github.com/naumov78/Dots">GitHub</a></li>
@@ -29,6 +33,11 @@
              a dot of corresponding color on the board. When player's dots placed around enemy dot this dot is considered captured and can not participate in
             the game any more. The captured zone became colored with player's color. The goal of the game is to capture at least 10 enemy's dots.</p>
         </div>
+        <div id="level-buttons">
+          <span id="level-button"><input id="easy" class="level-button" type="button" onClick="setLevel(id, 3)" value="Easy" /></span>
+          <span id="level-button"><input id="med" class="level-button" type="button" onClick="setLevel(id, 2)" value="Medium" /></span>
+          <span id="level-button"><input id="hard" class="level-button" type="button" onClick="setLevel(id, 1)" value="Hard" /></span>
+        </div>
         <div class="chose-player-buttons">
           <span id="left-button"><span id="button"><input type="button" onClick="startGame(false)" value="Play Against Human" /></span></span>
           <span id="right-button"><span id="button"><input type="button" onClick="startGame(true)" value="Play Against Computer" /></span></span>
@@ -36,10 +45,10 @@
 
         <div id="declare-winner" class="invisible">
           <div id="winner-declaration" class="winner-declaration invisible">
-            <p id="winner-is"></p>
+            <span id="winner-is"></span>
           </div>
           <div class="restart group">
-            <p id="restart-button"></p>
+            <span id="restart-button"></span>
           </div>
         </div>
         <div id="timer-container" class="invisible"><span id="timer"></span></div>

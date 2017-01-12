@@ -20,11 +20,20 @@ body {
 }
 
 .game-title {
+  /*float: right;*/
   width: 600px;
-  margin: 0 auto;
   text-align: center;
   font-size: 30px;
   font-weight: 700;
+}
+
+#sound {
+  float: right;
+}
+
+#sound > img {
+  width: 25px;
+  display: block;
 }
 
 .red {
@@ -58,7 +67,6 @@ body {
   cursor: pointer;
 }
 
-
 #canvas-container {
   position: relative;
   width: 540px;
@@ -89,15 +97,9 @@ body {
 }
 
 #declare-winner {
-  padding: 30px;
-  background: #ffffff;
-  opacity: 1;
-  border: 1px solid black;
-  border-radius: 10px;
   position: absolute;
-  left: 98px;
-  top: 180px;
-  box-shadow: 3px 3px 5px #888888;
+  left: 161px;
+  top: 543px;
 }
 
 .score-board {
@@ -136,20 +138,19 @@ body {
 #winner-is {
   letter-spacing: 0.9px;
   font-weight: 700;
-  font-size: 28px;
+  font-size: 22px;
 }
 
 .restart {
-  text-align: center;
 }
 
 #restart-button {
-  padding-left: 70px;
+  padding-left: 60px;
 }
 
 #restart-button > input {
-  width: 200px;
-  font-size: 23px;
+  width: 150px;
+  font-size: 18px;
   font-weight: 500;
   color: #0000ff;
   background: #fff3e6;
@@ -158,7 +159,6 @@ body {
 }
 
 #restart-button > input:hover {
-  width: 200px;
   background: #ffe6cc;
   color: #e60000;
   border: 1px solid #994f00;
@@ -183,7 +183,6 @@ body {
   width: 200px;
   font-size: 16px;
   font-weight: 400;
-  /*color: #0000ff;*/
   color: #003399;
   background: #fff3e6;
   border: 1px solid #994f00;
@@ -200,15 +199,50 @@ body {
   box-shadow: 2px 2px 5px #888888;
 }
 
+.level-button {
+  width: 80px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #003399;
+  background: #fff3e6;
+  border: 1px solid #994f00;
+  border-radius: 5px;
+  box-shadow: 0 2px grey;
+}
+
+.level-button:hover {
+  cursor: pointer;
+  background: #ffe6cc;
+}
+
+.pressed-level-button {
+  width: 80px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #003399;
+  background: #ffe6cc;
+  border: 1px solid #994f00;
+  border-radius: 5px;
+  box-shadow: 0 1px #888888;
+  transform: translateY(2px);
+}
+
 .game-rules {
   width: 500px;
   padding: 0 0 50px 0;
 }
 
+#level-buttons {
+  position: absolute;
+  left: 183px;
+  top: 420px;
+  width: 450px;
+}
+
 .chose-player-buttons {
   position: absolute;
   left: 75px;
-  top: 380px;
+  top: 465px;
   width: 450px;
 }
 
@@ -237,13 +271,13 @@ body {
 #timer-container {
   position: absolute;
   top: 550px;
-  left: 200px;
+  left: 195px;
   text-align: center;
 }
 
 #timer {
   color: black;
-  font-size: 14px;
+  font-size: 22px;
 }
 
 .name {

@@ -1,8 +1,9 @@
 const redDots = [];
 const blueDots = [];
 let currentPlayer = 'red';
-let neighbors, allRoutes, stack, visited, lastDotPlaced, count, innerColor, outerColor, winner;
+let neighbors, allRoutes, stack, visited, lastDotPlaced, count, innerColor, outerColor, winner, interval;
 let gameOver = false;
+let level = 3;
 let computerPlayer;
 const capturedList = [];
 const capturedEmptySpots = [];
@@ -19,9 +20,38 @@ const error = new Audio('./sounds/error.wav');
 const capture = new Audio('./sounds/capture.wav');
 const victory = new Audio('./sounds/victory.wav');
 const lose = new Audio('./sounds/lose.wav');
-showCurrentPlayer();
+const tick = new Audio('./sounds/metronom.wav');
 getColor();
 
+function muteSounds() {
+  place.muted = true;
+  error.muted = true;
+  capture.muted = true;
+  victory.muted = true;
+  lose.muted = true;
+  tick.muted = true;
+  toggleMuteButton();
+}
+
+function unmuteSounds() {
+  place.muted = false;
+  error.muted = false;
+  capture.muted = false;
+  victory.muted = false;
+  lose.muted = false;
+  tick.muted = false;
+  toggleMuteButton()
+}
+
+function toggleMuteButton() {
+const soundButton = document.getElementById('sound');
+// soundButton.innerHTML = ``;
+  if (place.muted) {
+    soundButton.innerHTML = `<img src="./images/soundon.png" onClick="unmuteSounds()">`
+  } else {
+    soundButton.innerHTML = `<img src="./images/soundoff.png" onClick="muteSounds()">`
+  }
+}
 
 function getColor() {
   if (currentPlayer === 'red') {
@@ -35,12 +65,26 @@ function getColor() {
   }
 }
 
+function setLevel(id, dif) {
+const ids = [easy, med, hard];
+level = dif;
+for (let i = 0; i < ids.length; i++ ) {
+  if (ids[i].id !== id) {
+    t = "#" + ids[i].id;
+    $(t).removeClass('pressed-level-button').addClass('level-button');
+  }
+}
+idx = "#" + id;
+$(idx).removeClass('level-button').addClass('pressed-level-button').blur();
+}
+
 function startGame(player) {
   playWithComputer(player);
   createBoard();
+  timer(level, document.getElementById('timer'));
   $('#game-title').removeClass('blue').addClass('red');
   $('#canvas-container').removeClass('border-start').addClass('red-border');
-  $('chose-player-buttons, game-rules, #rules, #title, #button').addClass('invisible');
+  $('chose-player-buttons, game-rules, #rules, #title, #button, #level-buttons').addClass('invisible');
   $('#winner-declaration, #gameBoard, #score-board, #timer-container').removeClass('invisible');
 
 }
@@ -99,11 +143,6 @@ function validMove(pos) {
   return false;
 }
 
-function showCurrentPlayer() {
-  const winnerField = document.getElementById('winner-is');
-  winnerField.innerHTML = `${currentPlayer}'s turn`
-}
-
 function updateScores() {
   const redScores = document.getElementById('red-score-amount');
   const blueScores = document.getElementById('blue-score-amount');
@@ -112,7 +151,9 @@ function updateScores() {
 }
 
 function declareWinner() {
+  window.clearInterval(interval);
   $('#declare-winner').removeClass('invisible');
+  $('#timer-container').addClass('invisible');
   const winnerField = document.getElementById('winner-is');
   if (winner === 'Red Player') {
     winnerField.innerHTML = `The Winner is ${winner}`
@@ -155,7 +196,6 @@ function placeDot(e) {
     findRoutes(stack);
     createCapture(processAllRoutes());
     switchPlayer();
-    showCurrentPlayer();
     updateScores();
     checkWinner();
   } else {
@@ -379,24 +419,47 @@ function enemyDotInsideCheck(dots) {
   }
 }
 
+function timer(count, display) {
+  function countDown() {
+    if (count > 1) {
+      tick.play()
+      display.innerHTML = `Time left: ${count} seconds`;
+    } else if (count === 1) {
+      tick.play()
+      display.innerHTML = `Time left: ${count} second`;
+    } else {
+      display.innerHTML = ``;
+    }
+    count--;
+    if (count < 0) {
+      window.clearInterval(interval);
+      switchPlayer();
+    }
+  }
+  interval = setInterval(countDown, 1000);
+}
 
 function switchPlayer() {
+  window.clearInterval(interval);
   enemyDotInside = false;
   if (currentPlayer === 'red' && computerPlayer) {
     currentPlayer = 'blue';
     immitateHuman();
     getColor();
     checkForCapture();
+    timer(level, document.getElementById('timer'));
   } else if (currentPlayer === 'red' && !computerPlayer) {
     currentPlayer = 'blue';
     togglePlayerColor();
     getColor();
     checkForCapture();
+    timer(level, document.getElementById('timer'));
   } else if (currentPlayer === 'blue') {
     currentPlayer = 'red';
     togglePlayerColor();
     getColor();
     checkForCapture();
+    timer(level, document.getElementById('timer'));
   }
 }
 
@@ -454,19 +517,21 @@ function increaseCaptures() {
 }
 
 function checkWinner() {
-  if (capturedReds > 9 && computerPlayer) {
+  debugger
+  if ((capturedReds > 9 && computerPlayer) || (redDots.length < 1 && capturedReds > 0)) {
+    debugger
     winner = 'Blue Player'
     lose.play();
     gameOver = true;
     declareWinner();
   }
-  if (capturedReds > 9 && !computerPlayer) {
+  if ((capturedReds > 9 && !computerPlayer) || (redDots.length < 1 && capturedReds > 0)) {
     winner = 'Blue Player'
     victory.play();
     gameOver = true;
     declareWinner();
   }
-  if (capturedBlues > 9) {
+  if (capturedBlues > 9 || (blueDots.length < 1 && capturedBlues > 0)) {
     winner = 'Red Player'
     victory.play();
     gameOver = true;
@@ -765,9 +830,10 @@ function placeAiDot(pos) {
     findRoutes(stack);
     createCapture(processAllRoutes());
     switchPlayer();
-    showCurrentPlayer();
     updateScores();
-    setTimeout(checkWinner, 500);
+    checkWinner();
+    // const id = setTimeout(checkWinner, 500);
+    // window.clearInterval(id)
 }
 
 // Helper methods
