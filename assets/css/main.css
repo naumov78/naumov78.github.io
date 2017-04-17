@@ -1077,6 +1077,11 @@ header.nav.hide-menu {
     text-transform: uppercase;
 }
 
+.descr {
+  line-height: 1.5;
+  
+}
+
 .protfolio-image:hover .p-overlay {
     opacity: 1;
     filter: alpha(opacity=100);
